@@ -11,7 +11,7 @@ class AlunoSchema(BaseModel):
     idade: int = 0
     endereco: str = "rua teste"
     telefone: str = "(00) 0000-0000"
-    data_nascimento: Date
+    data_nascimento:  str = "##/##/####"
     matricula:str ="000000"
 
 
@@ -54,7 +54,7 @@ class AlunoViewSchema(BaseModel):
     idade: int = 0
     endereco: str = "rua teste"
     telefone: str = "(00) 0000-0000"
-    data_nascimento: Date
+    data_nascimento: str = "##/##/####"
     matricula: str = "000000"
 
 

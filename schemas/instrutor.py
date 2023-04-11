@@ -12,8 +12,8 @@ class InstrutorSchema(BaseModel):
     idade: int = 0
     endereco: str = "rua teste"
     telefone: str = "(00) 0000-0000"
-    data_nascimento: Date
-    agenda:Date
+    data_nascimento:  str = "##/##/####"
+    agenda: str = "##/##/####"
 
 class InstrutorBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
@@ -55,8 +55,8 @@ class InstrutorViewSchema(BaseModel):
     idade: int = 0
     endereco: str = "rua teste"
     telefone: str = "(00) 0000-0000"
-    data_nascimento: Date
-    agenda: Date
+    data_nascimento:  str = "##/##/####"
+    agenda:  str = "##/##/####"
 
 
 class InstrutorDelSchema(BaseModel):

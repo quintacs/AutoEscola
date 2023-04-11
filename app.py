@@ -16,7 +16,7 @@ info = Info(title = "Minha API", version = "1.0.0" )
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
-home_tag = Tag(name="Documentacao", description="Selecao de documentacao: swagger, redoc ou rapidoc")
+home_tag = Tag(name="Documentacao", description="Selecao de documentacao: swagger Api Auto Escola")
 aluno_tag = Tag(name="Aluno", description="Adicao, visualizacao e remocao de alunos da base")
 instrutor_tag = Tag(name="Instrutor", description="Adicao, visualizacao e remocao de instrutores")
 
