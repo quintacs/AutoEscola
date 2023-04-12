@@ -1,4 +1,4 @@
-from sqlalchemy import Column,Integer,ForeignKey,Date
+from sqlalchemy import Column,Integer,ForeignKey,String
 
 from modelo import Pessoa, Base
 
@@ -12,7 +12,7 @@ class Instrutor(Pessoa, Base):
     #endereco = Column(String(200))
     #telefone = Column(String(20))
     #data_nascimento = Column(Date)
-    agenda = Column(Date)
+    agenda = Column(String(20))
 
     pessoa =  Column(Integer, ForeignKey("pessoa.id_pessoa"),nullable=False)
 

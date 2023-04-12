@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer,Date
+from sqlalchemy import Column, String, Integer,DateTime
 from modelo import Base
 
 class Pessoa(Base):
@@ -10,7 +10,7 @@ class Pessoa(Base):
     idade = Column(Integer)
     endereco = Column(String(200))
     telefone = Column(String(20))
-    data_nascimento = Column(Date)
+    data_nascimento = Column(String(20))
 
     def __int__(self, nome, idade, endereco, telefone, data_nascimento):
         self.nome = nome
@@ -19,5 +19,7 @@ class Pessoa(Base):
         self.telefone = telefone
         self.data_nascimento = data_nascimento
 
+
+   
 
 

@@ -1,8 +1,8 @@
 from sqlalchemy import Column,String,Integer,ForeignKey
 
-from modelo import Pessoa
+from modelo import Pessoa, Base
 
-class Aluno(Pessoa):
+class Aluno(Pessoa, Base):
 
     __tablename__='aluno'
 

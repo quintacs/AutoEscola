@@ -1,26 +1,29 @@
 from pydantic import BaseModel
-from sqlalchemy import Date
 from typing import List
 from modelo import Instrutor
 
 
 class InstrutorSchema(BaseModel):
-    """ Define como um novo produto a ser inserido deve ser representado
+    """ Define como um novo instrutor a ser inserido deve ser representado
     """
-
     nome: str = "Teste"
     idade: int = 0
     endereco: str = "rua teste"
     telefone: str = "(00) 0000-0000"
-    data_nascimento:  str = "##/##/####"
-    agenda: str = "##/##/####"
+    data_nascimento:  str = "00/00/0000"
+    agenda: str = "00/00/0000"
 
 class InstrutorBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
-        feita apenas com base no nome do produto.
+        feita apenas com base no id do instrutor.
+    """
+    id: int = 0
+
+class InstrutorBuscaSchemaNome(BaseModel):
+    """ Define como deve ser a estrutura que representa a busca. Que será
+        feita apenas com base no nome do instrutor.
     """
     nome: str = "Teste"
-
 
 class ListagemInstrutorSchema(BaseModel):
     """ Define como uma listagem de produtos será retornada.
@@ -44,7 +47,7 @@ def apresenta_instrutores(instrutores: List[Instrutor]):
             "agenda":instrutor.agenda
         })
 
-    return {"alunos": result}
+    return {"instrutores": result}
 
 
 class InstrutorViewSchema(BaseModel):
@@ -55,8 +58,8 @@ class InstrutorViewSchema(BaseModel):
     idade: int = 0
     endereco: str = "rua teste"
     telefone: str = "(00) 0000-0000"
-    data_nascimento:  str = "##/##/####"
-    agenda:  str = "##/##/####"
+    data_nascimento:  str = "00/00/0000"
+    agenda:  str = "00/00/0000"
 
 
 class InstrutorDelSchema(BaseModel):
@@ -71,7 +74,7 @@ def apresenta_instrutor(instrutor: Instrutor):
         ProdutoViewSchema.
     """
     return {
-            "id":id,
+            #"id":id,
             "nome":instrutor.nome,
             "idade":instrutor.idade,
             "endereco": instrutor.endereco,
