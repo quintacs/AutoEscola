@@ -12,7 +12,7 @@ class Pessoa(Base):
     telefone = Column(String(20))
     data_nascimento = Column(String(20))
 
-    def __int__(self, nome, idade, endereco, telefone, data_nascimento):
+    def __init__(self, nome, idade, endereco, telefone, data_nascimento):
         self.nome = nome
         self.idade = idade
         self.endereco = endereco

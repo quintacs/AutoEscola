@@ -14,6 +14,18 @@ class AlunoSchema(BaseModel):
     matricula:str ="000000"
 
 
+class AlunoViewSchema(BaseModel):
+    """ Define como um aluno será retornado.
+    """
+    id: int = 0
+    nome: str = "Teste"
+    idade: int = 0
+    endereco: str = "rua teste"
+    telefone: str = "(00) 0000-0000"
+    data_nascimento:  str = "00/00/0000"
+    matricula: str = "000000"
+
+
 class AlunoBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
         feita apenas com base no id do aluno.
@@ -30,19 +42,21 @@ class AlunoBuscaSchemaNome(BaseModel):
 
 
 
-class ListagemAlunosSchema(BaseModel):
+class ListagemAlunoViewSchema(BaseModel):
     """ Define como uma listagem de alunos será retornada.
     """
-    alunos:List[AlunoSchema]
+    AlunosViewSchema:List[AlunoViewSchema]
+    #alunos:List[AlunoSchema]
+    
 
-
-def apresenta_alunos(alunos: List[Aluno]):
+def apresenta_alunosViewSchem(AlunosViewSchema: List[AlunoViewSchema]):
     """ Retorna uma representação do aluno seguindo o schema definido em
         AlunoViewSchema.
     """
     result = []
-    for aluno in alunos:
+    for aluno in AlunosViewSchema:
         result.append({
+            "id":aluno.id,
             "nome":aluno.nome,
             "idade":aluno.idade,
             "endereco": aluno.endereco,
@@ -54,17 +68,28 @@ def apresenta_alunos(alunos: List[Aluno]):
     return {"alunos": result}
 
 
-class AlunoViewSchema(BaseModel):
-    """ Define como um aluno será retornado.
+class ListagemAlunosSchema(BaseModel):
+    """ Define como uma listagem de alunos será retornada.
     """
-    id: int = 1
-    nome: str = "Teste"
-    idade: int = 0
-    endereco: str = "rua teste"
-    telefone: str = "(00) 0000-0000"
-    data_nascimento:  str = "##/##/####"
-    matricula: str = "000000"
+    alunos:List[AlunoSchema]
 
+def apresenta_alunos(alunos: List[Aluno]):
+    """ Retorna uma representação do aluno seguindo o schema definido em
+        AlunoViewSchema.
+    """
+    result = []
+    for aluno in alunos:
+        result.append({
+            "id":aluno.id,
+            "nome":aluno.nome,
+            "idade":aluno.idade,
+            "endereco": aluno.endereco,
+            "telefone":aluno.telefone,
+            "data_nascimento":aluno.data_nascimento ,
+            "matricula" :aluno.matricula
+        })
+
+    return {"alunos": result}
 
 
 class AlunoDelSchema(BaseModel):
@@ -79,7 +104,7 @@ def apresenta_aluno(aluno: Aluno):
         AlunoViewSchema.
     """
     return {
-            #"id":id,
+            "id":aluno.id,
             "nome":aluno.nome,
             "idade":aluno.idade,
             "endereco": aluno.endereco,

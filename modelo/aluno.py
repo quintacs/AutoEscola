@@ -16,7 +16,7 @@ class Aluno(Pessoa, Base):
 
     pessoa =  Column(Integer, ForeignKey("pessoa.id_pessoa"),nullable=False)
 
-    def __int__(self, nome, idade, endereco, telefone, data_nascimento, matricula):
-        super().__int__(nome, idade, endereco, telefone, data_nascimento)
+    def __init__(self, nome, idade, endereco, telefone, data_nascimento, matricula):
+        super().__init__(nome, idade, endereco, telefone, data_nascimento)
         self.matricula = matricula
 

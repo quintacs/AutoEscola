@@ -1,0 +1,172 @@
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        
+        <link rel="stylesheet" href="./stylesheet/styles.css">
+        <script type="text/javascript" src="./js/script.js"></script>
+        <title>Auto Escola</title>
+    
+    </head>
+    <body class="container" onload="javascript:loadForm();" >
+        <header class="titulo img-titulo container" >
+            <h1 class="header-h1">Auto Escola</h1>
+        </header>
+        <div class="row">
+            <div class="col-sm-3 coluna menu">
+                <ul>
+                    <li id="aluno" >
+                        <!-- onclick="javascript:load('form','Loja','loadList');"  --> 
+                        <a href="#" onclick="javascript:alteraDisplay('lista','block'); loadAlunos(); alteraDisplay('form-instrutor','none'); limpaInstrutor();" > Aluno </a>															
+                    </li>
+                    <li id="instutor" >
+                        <!-- onclick="javascript:load('form','Oficina','loadList');"  --> 
+                        <a href="#" onclick="javascript:alteraDisplay('lista','block'); loadInstrutores(); alteraDisplay('form-aluno','none'); limpaAluno();" >  Instrutor </a>				
+                    </li>			
+                    <li id="Agenda" > 
+                        <!-- onclick="javascript:load('form','Peca','loadList');" -->
+                        <a href="#">  Agenda </a>
+                    </li>
+                    <!--li id="Produtos" > 
+                        <!- onclick="javascript:load('form','Produto','loadList');" ->
+                        <a href="#">  Produtos e Acessórios </a>
+                    </li>
+                    <li id="Servicos" >
+                        <!-onclick="javascript:load('form','Servico','loadList');" ->
+                        <a href="#">  Serviços </a>
+                    </li-->									
+                </ul>                 
+            </div>
+            <div class="col-sm-9 coluna  ">
+                <div class="row">
+                    
+                    <div id="form-instrutor"> 
+                        <div> <h2> Instrutor </h2></div>
+                        <!--form action="/AdicionaInstrutor" method="post"-->
+                            <div class="row" > 	
+                                <span class="coluna-25" >Id* </span>
+                                <input type="text" name="id" id="id_instrutor" value="" placeholder="id" class="coluna-75" >  
+                            </div>
+                            <div class="row" > 	
+                                <span class="coluna-25" >Nome* </span>
+                                <input type="text" name="nome" id="nome_instrutor" value="" placeholder="nome" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Idade* </span>
+                                <input type="text" name="idade" id="idade_instrutor" value="" placeholder="idade" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Endereco* </span>
+                                <input type="text" name="endereco" id="endereco_instrutor" value="" placeholder="endereco" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Telefone* </span>
+                                <input type="tel" name="telefone" id="telefone_instrutor" value="" placeholder="telefone" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Data Nascimento* </span>
+                                <input type="text" name="data_nascimento" id="data_nascimento_instrutor" value="" placeholder="data de nascimento" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Agenda* </span> 
+                                <input type="text" name="agenda" id="agenda_instrutor" value="" placeholder="agenda" class="coluna-75" >  
+                            </div>
+                            <div class="row" >
+                               <!-- <span onclick="newInstrutor()" class="addBtn">Adicionar</span> 	-->
+                               <div class="col-sm-4"></div>
+                               <div class="col-sm-4"> <input type="submit" value="Enviar"  onclick="javascript:newInstrutor();"> </div>
+                               <div class="col-sm-3"> <input type="submit" value="Fechar"  onclick="javascript:alteraDisplay('form-instrutor','none'); limpaInstrutor();"> </div>
+                            </div>
+                        <!--/form-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="form-aluno"> 
+                        <div> <h2> Aluno </h2></div>
+                        <!--form action="AtividadeServlet" method="post" -->
+                            <div class="row" > 	
+                                <span class="coluna-25" >Id* </span>
+                                <input type="text" name="id" id="id_aluno" value="" placeholder="id" class="coluna-75" >  
+                            </div>
+                            <div class="row" > 	
+                                <span class="coluna-25" >Nome* </span>
+                                <input type="text" name="nome" id="nome_aluno" value="" placeholder="nome" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Idade* </span>
+                                <input type="text" name="idade" id="idade_aluno" value="" placeholder="idade" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Endereco* </span>
+                                <input type="text" name="endereco" id="endereco_aluno" value="" placeholder="endereco" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Telefone* </span>
+                                <input type="text" name="telefone" id="telefone_aluno" value="" placeholder="telefone" class="coluna-75" >  
+                            </div>
+                            
+                            <div class="row" > 	
+                                <span class="coluna-25" >Data Nascimento* </span>
+                                <input type="text" name="data_nascimento" id="data_nascimento_aluno" value="" placeholder="data de nascimento" onkeyup="javascript:data('data_nascimento_aluno');" class="coluna-75" >  
+                            </div>
+    
+                            <div class="row" > 	
+                                <span class="coluna-25" >Matricula* </span>
+                                <input type="text" name="matricula" id="matricula_aluno" value="" placeholder="matricula" class="coluna-75" >  
+                            </div>
+                            <div class="row" >
+                                <!--<span onclick="newAluno()" class="addBtn">Adicionar</span> 	-->
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-4"> <input type="submit" value="Enviar"  onclick="javascript:newAluno();"> </div> 
+                                <div class="col-sm-3"> <input type="submit" value="Fechar"  onclick="javascript:alteraDisplay('form-aluno','none'); limpaAluno();"> </div>
+                            </div>
+                        <!--/form-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="lista"> 
+                        <!--lista-->
+                    </div>
+                </div>
+            </div>
+            <!--div class="col-sm-3 coluna">
+                direita
+            </div-->
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#data_nascimento_aluno').datepicker({
+                    autoclose: true,
+                    format: "dd/mm/yyyy"
+                });
+            });
+            $(document).ready(function() {
+                $('#agenda_instrutor').datepicker({
+                    autoclose: true,
+                    format: "dd/mm/yyyy"
+                });
+            });
+            $(document).ready(function() {
+                $('#data_nascimento_instrutor').datepicker({
+                    autoclose: true,
+                    format: "dd/mm/yyyy"
+                });
+            });
+             
+        </script>
+    </body>
+</html>

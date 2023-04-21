@@ -1,6 +1,6 @@
 from flask_openapi3 import  OpenAPI,Info, Tag
 from flask_cors import CORS
-from flask import redirect
+from flask import redirect, request
 
 from sqlalchemy.exc import IntegrityError
 from urllib.parse import unquote
@@ -31,14 +31,9 @@ def home():
 #Adiciona Aluno
 #***************
 @app.post('/AdicionaAluno',tags=[aluno_tag],
-          responses={"200":AlunoSchema, "409":ErrorSchema, "400":ErrorSchema})
+          responses={"200":AlunoViewSchema, "409":ErrorSchema, "400":ErrorSchema})
 def add_aluno(form:AlunoSchema):
-
-   # date_format = '%d/%m/%Y'
-    #data_nascimento_formatada = datetime.strptime(form.data_nascimento,date_format)
     
-    #data = datetime.strptime(form.data_nascimento,'%d/%m/%Y') #util.formata_data(form.data_nascimento)
-
     aluno = Aluno(
         nome = form.nome,
         idade = form.idade,
@@ -52,19 +47,24 @@ def add_aluno(form:AlunoSchema):
     try:
         session = Session()
         session.add(aluno)
+        #alunoResponse = session.query(Aluno).filter({Aluno.nome == aluno.nome,
+        #                                             Aluno.idade == aluno.idade,
+        #                                             Aluno.endereco == aluno.endereco,
+        #                                             Aluno.data_nascimento == aluno.data_nascimento,
+        #                                             Aluno.matricula == aluno.matricula}).first()
         session.commit()
         logger.debug(f"Aluno cadastrado com sucesso '{aluno.nome}'")
         return apresenta_aluno(aluno),200
-
     except IntegrityError as e:
-        error_msg = "Erro ao adicionar o aluno:/ "
-        logger.warning(f"Erro ao adicionar o aluno '{aluno.nome}','{error_msg}' ")
+        error_msg = f"Erro ao adicionar o aluno: '{e._message}'"
+        logger.warning(f"Erro: '{aluno.nome}','{error_msg}' ")
         return{"message":error_msg}, 409
 
-    except Exception as e:
-        error_msg = "Erro ao adicionar o aluno:/ "
-        logger.warning(f"Erro ao adicionar o aluno '{aluno.nome}','{error_msg}' ")
+    except Exception as er:
+        error_msg = f"Erro ao adicionar o aluno: {er.__str__}"
+        logger.warning(f"Erro: '{aluno.nome}','{error_msg}' ")
         return {"message": error_msg}, 400   
+
 
 #***************
 #Atualiza Aluno
@@ -112,13 +112,13 @@ def merge_aluno(path:AlunoBuscaSchema ,form:AlunoSchema):
         return apresenta_aluno(aluno),200
 
     except IntegrityError as e:
-        error_msg = "Erro ao atualizar o aluno:/ "
-        logger.warning(f"Erro ao atualizar o aluno '{aluno.nome}','{error_msg}' ")
+        error_msg = f"Erro ao atualizar o aluno: '{e._message}' "
+        logger.warning(f"Erro: '{aluno.nome}','{error_msg}' ")
         return{"message":error_msg}, 409
 
-    except Exception as e:
-        error_msg = "Erro ao atualizar o aluno:/ "
-        logger.warning(f"Erro ao atualizar o aluno '{aluno.nome}','{error_msg}' ")
+    except Exception as er:
+        error_msg = f"Erro ao atualizar o aluno: '{er.__str__}'"
+        logger.warning(f"Erro: '{aluno.nome}','{error_msg}' ")
         return {"message": error_msg}, 400
 
 
@@ -127,7 +127,7 @@ def merge_aluno(path:AlunoBuscaSchema ,form:AlunoSchema):
 #Lista Alunos
 #***************
 @app.get('/ListaAlunos',tags=[aluno_tag],
-         responses={"200":ListagemAlunosSchema,"404":ErrorSchema})
+         responses={"200":ListagemAlunoViewSchema,"404":ErrorSchema})
 def get_alunos():
     logger.debug(f"Coletando alunos")
 
@@ -137,8 +137,8 @@ def get_alunos():
         return {"alunos ":[]},200
     else:
         logger.debug(f"%d alunos encontrados "%len(alunos))
-        print(alunos)
-        return  apresenta_alunos(alunos),200
+        #print(alunos)
+        return  apresenta_alunosViewSchem(alunos),200
 
 #***************
 #Busca Aluno
@@ -192,6 +192,7 @@ def del_aluno(query: AlunoBuscaSchemaNome):
 @app.post('/AdicionaInstrutor',tags=[instrutor_tag],
           responses={"200":InstrutorSchema, "409":ErrorSchema, "400":ErrorSchema})
 def add_instrutor(form:InstrutorSchema):
+
     instrutor = Instrutor(
         nome = form.nome,
         idade = form.idade,
@@ -201,6 +202,7 @@ def add_instrutor(form:InstrutorSchema):
         agenda = form.agenda
     )
     logger.debug(f"Adicionando instrutor: '{instrutor.nome}'")
+    print(form)
     try:
         session = Session()
         session.add(instrutor)
@@ -209,13 +211,13 @@ def add_instrutor(form:InstrutorSchema):
         return apresenta_instrutor(instrutor),200
 
     except IntegrityError as e:
-        error_msg = "Erro ao adicionar o instrutor:/ "
-        logger.warning(f"Erro ao adicionar o instrutor '{instrutor.nome}','{error_msg}' ")
+        error_msg = f"Erro ao adicionar o instrutor: '{e._message}'"
+        logger.warning(f"Erro: '{instrutor.nome}','{error_msg}' ")
         return{"message":error_msg}, 409
 
-    except Exception as e:
-        error_msg = "Erro ao adicionar o instrutor:/ "
-        logger.warning(f"Erro ao adicionar o instrutor '{instrutor.nome}','{error_msg}' ")
+    except Exception as er:
+        error_msg = f"Erro ao adicionar o instrutor: '{er.__str__}'"
+        logger.warning(f"Erro: '{instrutor.nome}','{error_msg}' ")
         return {"message": error_msg}, 400
 
 
@@ -233,8 +235,6 @@ def merge_instrutor(path:InstrutorBuscaSchema ,form:InstrutorSchema):
     #data = util.formata_data(form.data_nascimento).date()
     #id = query.id
 
-    print(form)
-
     instrutor = Instrutor(
         nome = form.nome,
         idade = form.idade,
@@ -244,6 +244,7 @@ def merge_instrutor(path:InstrutorBuscaSchema ,form:InstrutorSchema):
         agenda = form.agenda
     )
     logger.debug(f"Atualizando instrutor: '{instrutor.nome}'")
+    #print(form)
     try:
         session = Session()
         #session.query(Instrutor).filter(Instrutor.id == path.id).update({Instrutor.nome:instrutor.nome,
@@ -263,6 +264,8 @@ def merge_instrutor(path:InstrutorBuscaSchema ,form:InstrutorSchema):
         
         session.commit()
         logger.debug(f"Instrutor atualizado com sucesso '{instrutor.nome}'")
+
+        #print(instrutorTemp)
         return apresenta_instrutor(instrutor),200
 
     except IntegrityError as e:
@@ -279,7 +282,7 @@ def merge_instrutor(path:InstrutorBuscaSchema ,form:InstrutorSchema):
 #Lista Instrutor
 #*********************
 @app.get('/ListaInstrutores',tags=[instrutor_tag],
-         responses={"200":ListagemInstrutorSchema,"404":ErrorSchema})
+         responses={"200":ListagemInstrutorViewSchema,"404":ErrorSchema})
 def get_instrutores():
     logger.debug(f"Coletando instrutores")
 
@@ -289,8 +292,8 @@ def get_instrutores():
         return {"instrutores ":[]},200
     else:
         logger.debug(f"%d instrutores encontrados "%len(instrutores))
-        print(instrutores)
-        return  apresenta_instrutores(instrutores) ,200
+        #print(instrutores)
+        return  apresenta_instrutoresViewSchema(instrutores) ,200
 
 #*********************
 #Busca Instrutor
@@ -298,7 +301,9 @@ def get_instrutores():
 @app.get('/BuscaInstrutor', tags=[instrutor_tag],
          responses={"200": InstrutorViewSchema, "404": ErrorSchema})
 def get_instrutor(query: InstrutorBuscaSchema):
+    
     id = query.id
+
     logger.debug(f"Coletando dados sobre o instrutor #{id}")
     session = Session()
     instrutor = session.query(Instrutor).filter(Instrutor.id == id).first()
@@ -309,7 +314,7 @@ def get_instrutor(query: InstrutorBuscaSchema):
         return {"mesage": error_msg}, 404
     else:
         logger.debug(f"Instrutor econtrado: '{instrutor.nome}'")
-        return apresenta_aluno(instrutor), 200
+        return apresenta_instrutorViewSchema(instrutor), 200
 
 #*********************
 #Deleta Instrutor
@@ -318,20 +323,20 @@ def get_instrutor(query: InstrutorBuscaSchema):
             responses={"200": InstrutorDelSchema, "404": ErrorSchema})
 def del_instrutor(query: InstrutorBuscaSchema):
 
-    instrutor_nome = unquote(unquote(query.nome))
-    print(instrutor_nome)
-    logger.debug(f"Deletando dados sobre o instrutor #{instrutor_nome}")
+    instrutor_id = unquote(unquote(query.id))
+    print(f"instrutor id: '{instrutor_id}'")
+    logger.debug(f"Deletando dados sobre o instrutor #{instrutor_id}")
 
     session = Session()
-    count = session.query(Instrutor).filter(Instrutor.nome == instrutor_nome).delete()
+    count = True #session.query(Instrutor).filter(Instrutor.id == instrutor_id).delete()
     session.commit()
 
     if count:
-        logger.debug(f"Deletado o instrutor #{instrutor_nome}")
-        return {"mesage": "Instrutor removido", "nome ": instrutor_nome}
+        logger.debug(f"Deletado o instrutor #{instrutor_id}")
+        return {"mesage": "Instrutor removido", "id ": instrutor_id}
     else:
         error_msg = "Instrutor não encontrado na base :/"
-        logger.warning(f"Erro ao deletar instrutor #'{instrutor_nome}', {error_msg}")
+        logger.warning(f"Erro ao deletar instrutor #'{instrutor_id}', {error_msg}")
         return {"mesage": error_msg}, 404
 
 #if __name__ == '__main__':
