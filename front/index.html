@@ -57,7 +57,7 @@
                             
                             <div class="row" > 	
                                 <span class="coluna-25" >Idade* </span>
-                                <input type="text" name="idade" id="idade_instrutor" value="" placeholder="idade" class="coluna-75" >  
+                                <input type="text" name="idade" id="idade_instrutor" onKeyPress="return Apenas_Numeros(event);" value="" placeholder="idade" class="coluna-75" >  
                             </div>
                             
                             <div class="row" > 	
@@ -67,7 +67,7 @@
                             
                             <div class="row" > 	
                                 <span class="coluna-25" >Telefone* </span>
-                                <input type="tel" name="telefone" id="telefone_instrutor" value="" placeholder="telefone" class="coluna-75" >  
+                                <input type="text" name="telefone" id="telefone_instrutor" onKeyPress="return Apenas_Numeros(event);" MaxLength="13" onkeyup="mascaraTelefone(this);" value="" placeholder="telefone" class="coluna-75" >  
                             </div>
                             
                             <div class="row" > 	
@@ -113,7 +113,7 @@
                             
                             <div class="row" > 	
                                 <span class="coluna-25" >Telefone* </span>
-                                <input type="text" name="telefone" id="telefone_aluno" value="" placeholder="telefone" class="coluna-75" >  
+                                <input type="tel" name="telefone" id="telefone_aluno" onKeyPress="return Apenas_Numeros(event);" MaxLength="13" onkeyup="javascript:mascaraTelefone(this);" value="" placeholder="telefone" class="coluna-75" >  
                             </div>
                             
                             <div class="row" > 	

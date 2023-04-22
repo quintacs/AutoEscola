@@ -17,7 +17,7 @@ function loadAlunos(){
         table+="        <th><div class='fechar-tabela' onclick=\"javascript:alteraDisplay('lista','none'); \" > x </div></th>";
         table+="      </tr>";    
         table+="      <tr>";
-        table+="        <th>#</th> ";
+        table+="        <th></th> ";
         table+="        <th>Nome</th>";
         table+="        <th>Idade</th>";
         table+="        <th>Endereco</th>";
@@ -106,7 +106,7 @@ function loadInstrutores(){
         table+="        <th><div class='fechar-tabela' onclick=\"javascript:alteraDisplay('lista','none'); \" > x </div></th>";
         table+="      </tr>";        
         table+="      <tr>";
-        table+="        <th>#</th> ";
+        table+="        <th></th> ";
         table+="        <th>Nome</th>";
         table+="        <th>Idade</th>";
         table+="        <th>Endereco</th>";
@@ -201,8 +201,13 @@ const postItem = async (urlImput, body) => {
       body: body
     })
       .then((response) => response.json())
+      .then((data) => {
+        //alert(data.alunos[0].nome);
+        alert("Inclusão realizada com sucesso");
+    })
       .catch((error) => {
-        console.error('Error:', error);
+        alert("Erro ao realizar a inclusão \n"+error);
+        //console.error('Error:', error);
       });
 }
 
@@ -217,14 +222,19 @@ const putItem = async (urlImput, body) => {
           "\n body: "+body
           +"\n  urlLocal: "+urlLocal);*/
  
-     fetch(urlLocal, {
+    fetch(urlLocal, {
        method: 'put',
        body: body
-     })
-       .then((response) => response.json())
-       .catch((error) => {
-         console.error('Error:', error);
-       });
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        //alert(data.alunos[0].nome);
+            alert("Alteração realizada com sucesso");
+    })
+    .catch((error) => {
+        alert("Erro ao realizar a alteração \n"+error);
+         //console.error('Error:', error);
+    });
  }
  
   
@@ -234,14 +244,14 @@ const putItem = async (urlImput, body) => {
   --------------------------------------------------------------------------------------
 */
 const newInstrutor = () => {
-
+    var instrutor = null;
     var nome			= document.getElementById("nome_instrutor").value;
     var idade			= document.getElementById("idade_instrutor").value;
     var endereco		= document.getElementById("endereco_instrutor").value;
     var telefone		= document.getElementById("telefone_instrutor").value;
     var data_nascimento = document.getElementById("data_nascimento_instrutor").value;
     var agenda		    = document.getElementById("agenda_instrutor").value;
-
+     
     /*alert(nome		+" \n"+
         idade			+" \n"+
         endereco		+" \n"+
@@ -266,7 +276,9 @@ const newInstrutor = () => {
         putItem('/AtualizaInstrutor/'+id,formData);
     }
 
-    loadInstrutores();
+    limpaInstrutor();
+    loadForm();
+
 
     /*if (inputProduct === '') {
       alert("Escreva o nome de um item!");
@@ -286,7 +298,7 @@ const newInstrutor = () => {
   --------------------------------------------------------------------------------------
 */
 const newAluno = () => {
-
+    var aluno = null;
     var nome			= document.getElementById("nome_aluno").value;
     var idade			= document.getElementById("idade_aluno").value;
     var endereco		= document.getElementById("endereco_aluno").value;
@@ -317,7 +329,16 @@ const newAluno = () => {
         putItem('/AtualizaAluno/'+id,formData);
     }
     
-    
+    limpaAluno();
+    loadForm();
+
+   /* alert(aluno.nome.value+"\n"+
+          aluno.idade.value+"\n"+
+          aluno.endereco.value+"\n"+
+          aluno.telefone.value+"\n"+
+          aluno.data_nascimento.value+"\n"+
+          aluno.matricula.value);*/
+
     /*if (inputProduct === '') {
       alert("Escreva o nome do aluno!");
     } else if (isNaN(inputQuantity) || isNaN(inputPrice)) {
@@ -380,3 +401,40 @@ const newAluno = () => {
     document.getElementById("data_nascimento_instrutor").value = "";
     document.getElementById("agenda_instrutor").value = "";
   }
+
+  function mascaraTelefone(obj) {
+    //function mascaraTelefone(obj, prox) {
+        
+        switch (obj.value.length) {
+            case 1:
+                obj.value = "(" + obj.value;
+                break;
+            case 3:
+                obj.value = obj.value + ")";
+                break;
+            case 8:
+                obj.value = obj.value + "-";
+                break;
+            case 14:
+                //prox.focus();
+                break;
+        }
+    }
+
+    function Apenas_Numeros(caracter) {
+        var nTecla = 0;
+        if (document.all) {
+            nTecla = caracter.keyCode;
+        } else {
+            nTecla = caracter.which;
+        }
+        if ((nTecla > 47 && nTecla < 58)
+                || nTecla == 8 || nTecla == 127
+                || nTecla == 0 || nTecla == 9  // 0 == Tab
+                || nTecla == 13) { // 13 == Enter
+            return true;
+        } else {
+            return false;
+        }
+    }
+

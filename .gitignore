@@ -1,6 +1,6 @@
 
-./database
+/database
 
 *.sqlite3
 
-./env/Lib
+/env/Lib
