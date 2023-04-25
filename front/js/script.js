@@ -13,10 +13,12 @@ function loadAlunos(){
         table+="        <th></th>";
         table+="        <th></th>";
         table+="        <th></th>";
+        table+="        <th></th>";
         table+="        <th><div class='adiciona-tabela' onclick=\"javascript:alteraDisplay('form-aluno','block');\" > + </div></th>";
         table+="        <th><div class='fechar-tabela' onclick=\"javascript:alteraDisplay('lista','none'); \" > x </div></th>";
         table+="      </tr>";    
         table+="      <tr>";
+        table+="        <th></th> ";
         table+="        <th></th> ";
         table+="        <th>Nome</th>";
         table+="        <th>Idade</th>";
@@ -39,7 +41,8 @@ function loadAlunos(){
 
             for(index = 0; index < alunos.length; index++){
                 table+="      <tr>";
-                table+="<td> <div class='glyphicon glyphicon-edit' onclick=\"javascript:loadAluno('"+alunos[index].id+"');\" >  </div></td>";
+                table+="<td> <div class='glyphicon glyphicon-edit' onclick=\"javascript:loadAluno('"+alunos[index].id+"');\" >   </div></td>";
+                table+="<td> <div class='glyphicon glyphicon-remove' onclick=\"javascript:deletaAluno('"+alunos[index].id+"');\" >  </div></td>";
                 table+="<td>"+alunos[index].nome            +"</td>";
                 table+="<td>"+alunos[index].idade           +"</td>";
                 table+="<td>"+alunos[index].endereco        +"</td>";
@@ -102,10 +105,12 @@ function loadInstrutores(){
         table+="        <th></th>";
         table+="        <th></th>";
         table+="        <th></th>";
+        table+="        <th></th>";
         table+="        <th><div class='adiciona-tabela' onclick=\"javascript:alteraDisplay('form-instrutor','block'); \" > + </div></th>";
         table+="        <th><div class='fechar-tabela' onclick=\"javascript:alteraDisplay('lista','none'); \" > x </div></th>";
         table+="      </tr>";        
         table+="      <tr>";
+        table+="        <th></th> ";
         table+="        <th></th> ";
         table+="        <th>Nome</th>";
         table+="        <th>Idade</th>";
@@ -126,9 +131,10 @@ function loadInstrutores(){
                 
             var instrutores = data.instrutores;
 
-            for(index = 0; index < instrutores.length; index++){
+            for(index = 0; index < instrutores.length; index++){ 
                 table+="      <tr>";
                 table+="<td> <div class='glyphicon glyphicon-edit' onclick=\"javascript:loadInstrutor('"+instrutores[index].id+"');\" >  </div></td>";
+                table+="<td> <div class='glyphicon glyphicon-remove' onclick=\"javascript:deletaInstrutor('"+instrutores[index].id+"');\" >  </div></td>";
                 table+="<td>"+instrutores[index].nome            +"</td>";
                 table+="<td>"+instrutores[index].idade           +"</td>";
                 table+="<td>"+instrutores[index].endereco        +"</td>";
@@ -213,15 +219,8 @@ const postItem = async (urlImput, body) => {
 
 const putItem = async (urlImput, body) => {
     
-    /* alert("url: "+urlImput+
-         "\n body: "+body);*/
+    var urlLocal = url + urlImput;
    
-     var urlLocal = url + urlImput;
-     
-    /* alert("url: "+urlImput+
-          "\n body: "+body
-          +"\n  urlLocal: "+urlLocal);*/
- 
     fetch(urlLocal, {
        method: 'put',
        body: body
@@ -237,6 +236,23 @@ const putItem = async (urlImput, body) => {
     });
  }
  
+ const deleteItem = async (paramUrl) => {
+    
+    var urlLocal = url+paramUrl;
+
+    fetch(urlLocal, {
+       method: 'delete'
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        //alert(data.alunos[0].nome);
+            alert("Exclusão realizada com sucesso");
+    })
+    .catch((error) => {
+        alert("Erro ao realizar a alteração \n"+error);
+         //console.error('Error:', error);
+    });
+ }
   
 /*
   --------------------------------------------------------------------------------------
@@ -332,26 +348,23 @@ const newAluno = () => {
     limpaAluno();
     loadForm();
 
-   /* alert(aluno.nome.value+"\n"+
-          aluno.idade.value+"\n"+
-          aluno.endereco.value+"\n"+
-          aluno.telefone.value+"\n"+
-          aluno.data_nascimento.value+"\n"+
-          aluno.matricula.value);*/
-
-    /*if (inputProduct === '') {
-      alert("Escreva o nome do aluno!");
-    } else if (isNaN(inputQuantity) || isNaN(inputPrice)) {
-      alert("Quantidade e valor precisam ser números!");
-    } else {
-      //insertList(inputProduct, inputQuantity, inputPrice)
-      postItem('/AdicionaAluno',formData)
-      alert("Item adicionado!")
-    }*/
   }
-  
 
-  
+  function deletaAluno(id){
+    var url = "/DeletaAluno?id="+id;
+    deleteItem(url);
+
+    limpaAluno();
+    loadForm();
+  }
+ 
+ function deletaInstrutor(id){
+    var url = "/DeletaInstrutor?id="+id;
+    deleteItem(url);
+    
+    limpaInstrutor();
+    loadForm();
+  } 
 
   function controleDisplay(myDIV) {
     var x = document.getElementById(myDIV);

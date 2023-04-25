@@ -135,9 +135,14 @@ input[type=submit] {
     cursor: pointer;
 }
 
-.glyphicon:hover{
+.glyphicon-edit:hover{
     color: cornflowerblue;
     cursor: pointer;
+}
+
+.glyphicon-remove:hover{
+    color: brown;
+    cursor:pointer;
 }
 
 /*

@@ -73,13 +73,6 @@ def add_aluno(form:AlunoSchema):
           responses={"200":AlunoViewSchema, "409":ErrorSchema, "400":ErrorSchema})
 def merge_aluno(path:AlunoBuscaSchema ,form:AlunoSchema): 
    
-   # date_format = '%d/%m/%Y'
-    #data_nascimento_formatada = datetime.strptime(form.data_nascimento,date_format)
-    
-    #util = Util()
-    #data = util.formata_data(form.data_nascimento).date()
-    #id = query.id
-
     aluno = Aluno(
         nome = form.nome,
         idade = form.idade,
@@ -91,12 +84,6 @@ def merge_aluno(path:AlunoBuscaSchema ,form:AlunoSchema):
     logger.debug(f"Atualizando aluno: '{aluno.nome}'")
     try:
         session = Session()
-        #session.query(Aluno).filter(Aluno.id == path.id).update({Aluno.nome:aluno.nome,
-        #                                                    Aluno.idade:aluno.idade,
-        #                                                    Aluno.endereco:aluno.endereco,
-        #                                                    Aluno.telefone:aluno.telefone,
-        #                                                    Aluno.data_nascimento:aluno.data_nascimento,
-        #                                                    Aluno.matricula:aluno.matricula}, synchronize_session=False)
         
         alunoTemp = session.query(Aluno).get(path.id)
         alunoTemp.nome = aluno.nome
@@ -165,22 +152,25 @@ def get_aluno(query: AlunoBuscaSchema):
 #***************
 @app.delete('/DeletaAluno', tags=[aluno_tag],
             responses={"200": AlunoDelSchema, "404": ErrorSchema})
-def del_aluno(query: AlunoBuscaSchemaNome):
+def del_aluno(query: AlunoBuscaSchema):
 
-    aluno_nome = unquote(unquote(query.nome))
-    print(aluno_nome)
-    logger.debug(f"Deletando dados sobre o aluno #{aluno_nome}")
+    id = query.id
 
     session = Session()
-    count = True #session.query(Aluno).filter(Aluno.nome == aluno_nome).delete()
+    aluno = session.query(Aluno).filter(Aluno.id == id).first()
+
+    #aluno_nome = unquote(unquote(query.nome))
+    print(aluno.nome)
+    logger.debug(f"Deletando dados sobre o aluno #{aluno.nome}")
+    count = session.query(Aluno).filter(Aluno.id == aluno.id).delete()
     session.commit()
 
     if count:
-        logger.debug(f"Deletado produto #{aluno_nome}")
-        return {"mesage": "Produto removido", "id": aluno_nome}
+        logger.debug(f"Deletado produto #{aluno.nome}")
+        return {"mesage": "Aluno removido", "nome ": aluno.nome},200
     else:
         error_msg = "Aluno não encontrado na base :/"
-        logger.warning(f"Erro ao deletar aluno #'{aluno_nome}', {error_msg}")
+        logger.warning(f"Erro ao deletar aluno #'{aluno.nome}', {error_msg}")
         return {"mesage": error_msg}, 404
 
 #***************************************************************************
@@ -227,13 +217,6 @@ def add_instrutor(form:InstrutorSchema):
 @app.put('/AtualizaInstrutor/<int:id>', tags=[instrutor_tag], 
           responses={"200":InstrutorSchema, "409":ErrorSchema, "400":ErrorSchema})
 def merge_instrutor(path:InstrutorBuscaSchema ,form:InstrutorSchema): 
-   
-   # date_format = '%d/%m/%Y'
-    #data_nascimento_formatada = datetime.strptime(form.data_nascimento,date_format)
-    
-    #util = Util()
-    #data = util.formata_data(form.data_nascimento).date()
-    #id = query.id
 
     instrutor = Instrutor(
         nome = form.nome,
@@ -247,12 +230,6 @@ def merge_instrutor(path:InstrutorBuscaSchema ,form:InstrutorSchema):
     #print(form)
     try:
         session = Session()
-        #session.query(Instrutor).filter(Instrutor.id == path.id).update({Instrutor.nome:instrutor.nome,
-        #                                                    Instrutor.idade:instrutor.idade,
-        #                                                    Instrutor.endereco:instrutor.endereco,
-        #                                                    Instrutor.telefone:instrutor.telefone,
-        #                                                    Instrutor.data_nascimento:instrutor.data_nascimento,
-        #                                                    Instrutor.agenda:instrutor.agenda}, synchronize_session=False)
         
         instrutorTemp = session.query(Instrutor).get(path.id)
         instrutorTemp.nome = instrutor.nome
@@ -323,17 +300,24 @@ def get_instrutor(query: InstrutorBuscaSchema):
             responses={"200": InstrutorDelSchema, "404": ErrorSchema})
 def del_instrutor(query: InstrutorBuscaSchema):
 
-    instrutor_id = unquote(unquote(query.id))
+    #instrutor_id = unquote(unquote(query.id))
+    instrutor_id = query.id
     print(f"instrutor id: '{instrutor_id}'")
     logger.debug(f"Deletando dados sobre o instrutor #{instrutor_id}")
 
     session = Session()
-    count = True #session.query(Instrutor).filter(Instrutor.id == instrutor_id).delete()
+    
+    instrutor = session.query(Instrutor).filter(Instrutor.id == instrutor_id).first()
+    
+    print(instrutor.nome)
+    logger.debug(f"Deletando dados sobre o instrutor #{instrutor.nome}")
+
+    count = session.query(Instrutor).filter(Instrutor.id == instrutor.id).delete()
     session.commit()
 
     if count:
         logger.debug(f"Deletado o instrutor #{instrutor_id}")
-        return {"mesage": "Instrutor removido", "id ": instrutor_id}
+        return {"mesage": "Instrutor removido", "id ": instrutor_id}, 200
     else:
         error_msg = "Instrutor não encontrado na base :/"
         logger.warning(f"Erro ao deletar instrutor #'{instrutor_id}', {error_msg}")
